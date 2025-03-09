@@ -104,8 +104,11 @@ const Home = () => {
             </button>
             <p>
               Don't have an account?
-              <NavLink className={"text-indigo-600 font-semibold"} to={"/"}>
-                SignUp
+              <NavLink
+                className={"text-indigo-600 font-semibold"}
+                to={"/Signup"}
+              >
+                Signup
               </NavLink>
             </p>
           </div>

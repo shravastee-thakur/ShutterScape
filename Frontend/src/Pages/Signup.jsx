@@ -59,7 +59,7 @@ const Signup = () => {
         />
       </div>
       <div className="relative w-10/12 sm:w-3/4 md:w-2/5 lg:w-1/4 border-2 rounded-xl p-4 md:p-6 bg-white bg-opacity-40">
-        <h1 className="text-center mt-3 text-2xl font-bold">Login</h1>
+        <h1 className="text-center mt-3 text-2xl font-bold">Signup</h1>
 
         <form onSubmit={handleSubmit} className="p-4">
           <div className="flex flex-col gap-1">
@@ -104,7 +104,7 @@ const Signup = () => {
             </button>
             <p className="mt-2 text-center text-sm">
               Already have an account?{" "}
-              <NavLink className="text-indigo-600 font-semibold" to={"/login"}>
+              <NavLink className="text-indigo-600 font-semibold" to={"/"}>
                 Login
               </NavLink>
             </p>
