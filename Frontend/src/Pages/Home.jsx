@@ -10,7 +10,7 @@ const Home = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,21 +25,19 @@ const Home = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/v1/user/login",
+        "http://localhost:8000/api/v1/user/login",
         user,
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withcredentials: true,
+          withCredentials: true,
         }
       );
       console.log(res.data);
-      if (res?.data?.token && res?.data?.data?.name) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("name", res.data.data.name);
-        alert("Login successful");
-        navigate("/images");
+      if (res.data.success) {
+        alert("User Logged in successfully");
+        setUser({ email: "", password: "" });
       }
     } catch (error) {
       console.log(error);

@@ -24,13 +24,13 @@ const Signup = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/v1/user/signup",
+        "http://localhost:8000/api/v1/user/signup",
         user,
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withcredentials: true,
+          withCredentials: true,
         }
       );
 
@@ -39,7 +39,7 @@ const Signup = () => {
       if (res.data.success) {
         alert("User created successfully");
         setUser({ name: "", email: "", password: "" });
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       const errorMessage =
