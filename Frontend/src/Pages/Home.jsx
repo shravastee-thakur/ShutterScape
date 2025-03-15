@@ -3,14 +3,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
+  const { login } = useAuth();
+  const Navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  // const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,7 +20,6 @@ const Home = () => {
       ...user,
       [name]: value,
     });
-    console.log(user);
   };
 
   const handleSubmit = async (e) => {
@@ -34,10 +35,15 @@ const Home = () => {
           withCredentials: true,
         }
       );
-      console.log(res.data);
+
       if (res.data.success) {
+        await login(user);
         alert("User Logged in successfully");
         setUser({ email: "", password: "" });
+        Navigate("/gallery");
+      }
+      if (res.data.data.role === "admin") {
+        Navigate("/admin");
       }
     } catch (error) {
       console.log(error);
