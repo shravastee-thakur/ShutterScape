@@ -10,6 +10,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoutes from "./Routes/userRoute.js";
 import adminRoutes from "./Routes/adminRoute.js";
+import imageRoutes from "./Routes/imageRoute.js";
 
 connectDB();
 
@@ -28,6 +29,8 @@ app.use("/api/v1/user", userRoutes);
 // http://localhost:8000/api/v1/user/signup
 app.use("/api/v1/admin", adminRoutes);
 // http://localhost:8000/api/v1/admin/getUser
+app.use("/api/v1/image", imageRoutes);
+// http://localhost:8000/api/v1/image/upload
 
 app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT}`);

@@ -5,7 +5,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
-const Home = () => {
+const Login = () => {
   const { login } = useAuth();
   const Navigate = useNavigate();
   const [user, setUser] = useState({
@@ -40,7 +40,7 @@ const Home = () => {
         await login(user);
         alert("User Logged in successfully");
         setUser({ email: "", password: "" });
-        Navigate("/gallery");
+        Navigate("/");
       }
       if (res.data.data.role === "admin") {
         Navigate("/admin");
@@ -122,4 +122,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Login;

@@ -59,61 +59,68 @@ const Admin = () => {
   if (authUser.role !== "admin") return <Navigate to="/unauthorized" />;
 
   return (
-    <div className="admin-container">
-      <h2 className="text-xl font-bold">Manage Users</h2>
+    <div className="admin-container flex flex-col items-center justify-center">
+      <div className="w-full max-w-full md:max-w-[70%] overflow-auto">
+        <h2 className="text-xl font-bold text-center mt-2">Manage Users</h2>
 
-      <table className="border-collapse border border-gray-300 w-full mt-4">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-4 py-2">Name</th>
-            <th className="border border-gray-300 px-4 py-2">Email</th>
-            <th className="border border-gray-300 px-4 py-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.length > 0 ? (
-            users.map((user, index) => (
-              <tr key={index} className="text-center">
-                <td className="border border-gray-300 px-4 py-2">
-                  {user.name}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {user.email}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <button
-                    onClick={() => handleDelete(user._id)}
-                    className={`px-3 py-1 rounded ${
-                      user.role === "admin"
-                        ? "bg-gray-500 cursor-not-allowed"
-                        : "bg-red-500 hover:bg-red-600"
-                    } text-white`}
-                    disabled={user.role === "admin"} // Disables the button for admin
-                  >
-                    Delete
-                  </button>
+        <table className="border-collapse border border-gray-300 mt-4 w-full">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border border-gray-300 px-2 md:px-4 py-2">Name</th>
+              <th className="border border-gray-300 px-2 md:px-4 py-2">
+                Email
+              </th>
+              <th className="border border-gray-300 px-2 md:px-4 py-2">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.length > 0 ? (
+              users.map((user, index) => (
+                <tr key={index} className="text-center">
+                  <td className="border border-gray-300 px-4 py-2">
+                    {user.name}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {user.email}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className={`px-3 py-1 rounded ${
+                        user.role === "admin"
+                          ? "bg-gray-500 cursor-not-allowed"
+                          : "bg-red-500 hover:bg-red-600"
+                      } text-white`}
+                      disabled={user.role === "admin"}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="text-center py-4">
+                  No users found
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3" className="text-center py-4">
-                No users found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
 
-      <div className="flex justify-center items-center mt-8">
-        <button
-          onClick={handleClick}
-          className="bg-[#27667B] text-white font-bold p-2 rounded-lg"
-        >
-          Go to Gallery
-        </button>
+        <div className="flex justify-center items-center mt-8">
+          <button
+            onClick={handleClick}
+            className="bg-[#27667B] text-white font-bold p-2 rounded-lg"
+          >
+            Go to Gallery
+          </button>
+        </div>
       </div>
     </div>
+    
   );
 };
 
