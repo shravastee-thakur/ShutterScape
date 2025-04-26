@@ -27,16 +27,16 @@ const userSchema = new mongoose.Schema(
       default: " ",
     },
     isVerified: {
-        type: Boolean,
-        default: false,
-      },
-      otp: {
-        type: String,
-        default: "",
-      },
-      otpExpires: {
-        type: Date,
-      },
+      type: Boolean,
+      default: false,
+    },
+    otp: {
+      type: String,
+      default: "",
+    },
+    otpExpires: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );
@@ -64,6 +64,7 @@ userSchema.statics.login = async function (email, password) {
 
   return user;
 };
+
 
 const User = mongoose.model("User", userSchema);
 export default User;
