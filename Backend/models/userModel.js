@@ -37,6 +37,12 @@ const userSchema = new mongoose.Schema(
     otpExpires: {
       type: Date,
     },
+    images: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Image",
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -64,7 +70,6 @@ userSchema.statics.login = async function (email, password) {
 
   return user;
 };
-
 
 const User = mongoose.model("User", userSchema);
 export default User;
