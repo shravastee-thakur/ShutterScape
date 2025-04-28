@@ -1,109 +1,55 @@
-import fs from "fs";
-import { v2 as cloudinary } from "cloudinary";
-import dotenv from "dotenv";
-import ImageModel from "../models/imageModel.js";
-dotenv.config();
+import ImageModel from "../Models/imageModel.js";
+import {
+  validateFile,
+  uploadToCloudinary,
+  cleanupFile,
+} from "../utils/imageUtils.js";
 
-if (
-  !process.env.CLOUDINARY_NAME ||
-  !process.env.CLOUDINARY_API_KEY ||
-  !process.env.CLOUDINARY_API_SECRET
-) {
-  console.error("Cloudinary configuration is missing!");
-  process.exit(1);
-}
+// Helper function for error responses
+const errorResponse = (res, status, message, error) => {
+  console.error(message, error);
+  return res.status(status).json({
+    success: false,
+    message,
+    error: error.message,
+  });
+};
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-const ALLOWED_FILE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-];
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
-
+// Upload image
 export const uploadImage = async (req, res) => {
+  let filePath = req.file?.path;
+
   try {
-    // Check if file exists
-    if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        message: "No file uploaded",
-      });
-    }
-
-    const filePath = req.file.path;
-    const originalName = req.file.originalName;
-
-    // Validate file type
-    if (!ALLOWED_FILE_TYPES.includes(req.file.mimetype)) {
-      fs.unlinkSync(filePath);
-      return res.status(400).json({
-        success: false,
-        message:
-          "Invalid file type. Only JPEG, PNG, GIF, and WEBP are allowed.",
-      });
-    }
-
-    if (req.file.size > MAX_FILE_SIZE) {
-      fs.unlinkSync(filePath);
-      return res.status(400).json({
-        success: false,
-        message: "File size exceeds 5MB limit",
-      });
-    }
+    // Validate file
+    validateFile(req.file);
 
     // Upload to Cloudinary
-    const cloudinaryResponse = await cloudinary.uploader.upload(filePath, {
-      folder: "ShutterScape",
-    });
+    const cloudinaryResponse = await uploadToCloudinary(filePath);
 
-    const newImage = new ImageModel({
+    // Save to database
+    const newImage = await ImageModel.create({
       imageURL: cloudinaryResponse.secure_url,
-      originalName: originalName,
+      originalName: req.file.originalname,
       user: req.user?._id,
       cloudinaryPublicId: cloudinaryResponse.public_id,
     });
 
-    await newImage.save();
+    // Cleanup
+    cleanupFile(filePath);
 
-    try {
-      fs.unlinkSync(filePath);
-    } catch (unlinkError) {
-      console.error("Error deleting temporary file:", unlinkError);
-    }
-
-    res.status(201).json({
+    // Success response
+    return res.status(201).json({
       success: true,
       message: "Image uploaded successfully",
       image: {
         id: newImage._id,
         url: cloudinaryResponse.secure_url,
-        originalName: originalName,
+        originalName: req.file.originalname,
       },
     });
   } catch (error) {
-    console.error("Upload Error:", error);
-
-    // Clean up: delete the temporary file if something went wrong
-    if (req.file?.path) {
-      try {
-        fs.unlinkSync(req.file.path);
-      } catch (unlinkError) {
-        console.error("Error cleaning up temporary file:", unlinkError);
-      }
-    }
-
-    res.status(500).json({
-      success: false,
-      message: "Image upload failed",
-      error: error.message,
-    });
+    cleanupFile(filePath);
+    return errorResponse(res, 500, "Image upload failed", error);
   }
 };
 
@@ -126,6 +72,7 @@ export const getImages = async (req, res) => {
   }
 };
 
+// Delete image
 export const deleteImage = async (req, res) => {
   try {
     const image = await ImageModel.findById(req.params.id);
