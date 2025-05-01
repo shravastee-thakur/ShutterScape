@@ -4,6 +4,7 @@ import {
   generateRefreshToken,
   verifyRefreshToken,
 } from "../utils/tokenUtils.js";
+import { sendMail } from "../utils/mailer.js";
 
 const otpStore = new Map();
 
@@ -13,14 +14,14 @@ const generateOtp = () =>
 //Register
 export const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({ name, email, password, role });
 
     //generate otp
     const otp = generateOtp();
@@ -39,18 +40,58 @@ export const registerUser = async (req, res, next) => {
 };
 
 //Verify Otp
+// export const verifyOtp = async (req, res, next) => {
+//   try {
+//     const { otp } = req.body;
+
+//      // Find the record in the otpStore
+//      let userEmail = null;
+
+//     const record = otpStore.get(email);
+//     if (!record || record.otp !== otp || Date.now() > record.expiresAt) {
+//       return res.status(400).json({ message: "Invalid or expired OTP" });
+//     }
+
+//     otpStore.delete(email);
+//     const user = await User.findOneAndUpdate(
+//       { email },
+//       { isVerified: true },
+//       { new: true }
+//     );
+
+//     return res
+//       .status(200)
+//       .json({ message: "Email verified successfully", user });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 export const verifyOtp = async (req, res, next) => {
   try {
-    const { email, otp } = req.body;
+    const { otp } = req.body; // OTP received in the request body
 
-    const record = otpStore.get(email);
-    if (!record || record.otp !== otp || Date.now() > record.expiresAt) {
+    // Find the record in the otpStore
+    let userEmail = null;
+
+    // Find the email that corresponds to the otp in the otpStore
+    for (let [email, record] of otpStore.entries()) {
+      if (record.otp === otp && Date.now() <= record.expiresAt) {
+        userEmail = email;
+        break;
+      }
+    }
+
+    if (!userEmail) {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
 
-    otpStore.delete(email);
+    // OTP is valid, so remove it from the store
+    otpStore.delete(userEmail);
+
+    // Update user verification status
     const user = await User.findOneAndUpdate(
-      { email },
+      { email: userEmail },
       { isVerified: true },
       { new: true }
     );

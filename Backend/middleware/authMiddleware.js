@@ -1,5 +1,4 @@
 import { verifyAccessToken } from "../utils/tokenUtils.js";
-import User from "../models/userModel.js";
 
 export const verifyUser = async (req, res, next) => {
   try {

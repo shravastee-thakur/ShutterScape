@@ -26,7 +26,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/login",
+        "http://localhost:5000/api/v1/user/login",
         user,
         {
           headers: {

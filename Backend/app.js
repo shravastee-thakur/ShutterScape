@@ -3,11 +3,12 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import morgan from "morgan";
-import mongoSanitize from "express-mongo-sanitize";
+// import mongoSanitize from "express-mongo-sanitize";
 import rateLimit from "express-rate-limit";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import imageRoutes from "./routes/imageRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -16,14 +17,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
+
 app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("dev"));
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -38,6 +40,9 @@ app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/user", userRoutes);
 //http://localhost:5000/api/v1/user/me
+
+app.use("/api/v1/image", imageRoutes);
+//http://localhost:5000/api/v1/image/uploadImage
 
 app.use(errorHandler);
 

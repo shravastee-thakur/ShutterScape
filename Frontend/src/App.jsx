@@ -7,6 +7,8 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import Unauthorized from "./Pages/Unauthorized";
 import Gallery from "./Pages/Gallery";
 import Login from "./Pages/Login";
+import Verify from "./Pages/Verify";
+import UploadPage from "./Pages/UploadPage";
 
 function App() {
   return (
@@ -16,9 +18,20 @@ function App() {
         <Routes>
           <Route path="/" element={<Gallery />} />
           <Route path="/signup" element={<Signup />} />
-          <Route element={<ProtectedRoute role="admin" />}></Route>
-          <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/upload" element={<UploadPage />} />{" "}
+          {/* <-- Added this */}
+          {/* Protected Admin Route */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute role="admin">
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+          {/* Unauthorized Page */}
           <Route path="*" element={<Unauthorized />} />
         </Routes>
       </BrowserRouter>
