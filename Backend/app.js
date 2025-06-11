@@ -30,5 +30,6 @@ app.use(limiter);
 
 //Routes
 app.use("/api/v1/user", userRoute);
+// http://localhost:8000/api/v1/user/register
 
 export default app;
