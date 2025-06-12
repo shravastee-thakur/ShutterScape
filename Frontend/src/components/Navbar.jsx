@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="bg-[#27667B] text-white p-4 lg:p-6 flex justify-between items-center">
+    <div className="bg-[#27667B] text-white  h-[80px] p-4 lg:p-6 flex justify-between items-center">
       <h1 className="text-2xl lg:text-4xl font-semibold md:px-10">
         ShutterScape
       </h1>
