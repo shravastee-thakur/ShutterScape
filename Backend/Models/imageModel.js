@@ -1,17 +1,19 @@
 import mongoose from "mongoose";
 
-const imageSchama = new mongoose.Schema(
+const imageSchema = new mongoose.Schema(
   {
-    imageURL: {
+    imageUrl: {
       type: String,
       required: true,
     },
-
     originalName: {
       type: String,
       required: true,
     },
-
+    publicId: {
+      type: String,
+      required: true, 
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -21,5 +23,5 @@ const imageSchama = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Image = mongoose.model("Image", imageSchama);
+const Image = mongoose.model("Image", imageSchema);
 export default Image;

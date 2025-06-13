@@ -131,6 +131,7 @@ export const verifyOtpLogin = async (req, res, next) => {
           name: user.name,
           email: user.email,
           role: user.role,
+          verified: user.isVerified,
         },
         message: "User logged in successfully",
       });
@@ -283,6 +284,7 @@ export const refreshTokenhandler = async (req, res, next) => {
           name: user.name,
           email: user.email,
           role: user.role,
+          verified: user.isVerified,
         },
         message: "User logged in successfully",
       });
