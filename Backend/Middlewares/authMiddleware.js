@@ -1,7 +1,7 @@
 import { verifyAccessToken } from "../utils/tokenUtils.js";
 import User from "../Models/userModel.js";
 
-export const authenticate = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization || "Authorization";
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -40,3 +40,5 @@ export const authenticate = async (req, res, next) => {
       .json({ message: "Forbidden: Invalid or expired token" });
   }
 };
+
+export default authenticate;

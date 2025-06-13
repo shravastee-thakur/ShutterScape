@@ -6,9 +6,10 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
-  const [data, setData] = useState(null);
+  const [role, setRole] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [verified, setVerified] = useState(false);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const getaccessToken = async () => {
@@ -23,7 +24,7 @@ const AuthProvider = ({ children }) => {
 
         if (res.data.success) {
           setAccessToken(res.data.accessToken);
-          setData(res.data.user);
+          setRole(res.data.user.role);
           setVerified(res.data.user.verified);
           setUserId(res.data.user._id);
         }
@@ -50,6 +51,7 @@ const AuthProvider = ({ children }) => {
 
       if (res.data.success) {
         setUserId(res.data.userId);
+        alert(res.data.message);
         return true;
       }
     } catch (error) {
@@ -70,7 +72,7 @@ const AuthProvider = ({ children }) => {
       console.log(res.data);
       if (res.data.success) {
         setAccessToken(res.data.accessToken);
-        setData(res.data.user);
+        setRole(res.data.user.role);
         setVerified(res.data.user.verified);
         alert(res.data.message);
         return true;
@@ -143,6 +145,55 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // Fetch all registered users (Admin API)
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8000/api/v1/admin/get-user",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            withCredentials: true,
+          }
+        );
+
+        if (res.data.success) {
+          setUsers(res.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching users", error);
+      }
+    };
+
+    if (role === "admin") {
+      getUsers();
+    }
+  }, [role]);
+
+  // Delete user function
+  const deleteUser = async (userId) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:8000/api/v1/admin/delete-user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        alert(res.data.message);
+        return true;
+      }
+    } catch (error) {
+      console.error("Error deleting user", error);
+    }
+  };
+
   const logout = async () => {
     if (!accessToken) return;
     try {
@@ -161,7 +212,7 @@ const AuthProvider = ({ children }) => {
         alert(res.data.message);
         setUserId(null);
         setAccessToken(null);
-        setData(null);
+        setRole(null);
         setVerified(false);
         return true;
       }
@@ -176,13 +227,16 @@ const AuthProvider = ({ children }) => {
         value={{
           userId,
           login,
-          data,
+          role,
           accessToken,
           otpVerify,
           verified,
           forgotPassword,
           resetPassword,
           changePassword,
+          users,
+          setUsers,
+          deleteUser,
           logout,
         }}
       >

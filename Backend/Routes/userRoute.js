@@ -16,7 +16,7 @@ import {
   resetPasswordSchema,
   forgetPasswordSchema,
 } from "../validation/joiValidation.js";
-import { authenticate } from "../Middlewares/authMiddleware.js";
+import  authenticate  from "../Middlewares/authMiddleware.js";
 
 const router = express.Router();
 

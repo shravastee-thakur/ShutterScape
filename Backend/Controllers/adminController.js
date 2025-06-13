@@ -9,7 +9,7 @@ export const getUsers = async (req, res, next) => {
         .json({ success: false, message: "Isers not found" });
     }
 
-    if (users.length !== 0) {
+    if (users.length === 0) {
       return res.json({ message: "No user in database" });
     }
 
