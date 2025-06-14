@@ -4,4 +4,6 @@
 
 html, body, #root {
   @apply h-full m-0 overflow-hidden;
+  
 }
+

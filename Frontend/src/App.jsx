@@ -12,21 +12,31 @@ import ResetPassword from "./pages/ResetPassword";
 import Admin from "./pages/Admin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthContext } from "./context/AuthProvider";
+import ChangePassword from "./pages/ChangePassword";
 
 const App = () => {
-  const { role } = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
   return (
     <div className="h-screen">
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/otp" element={<Otp />} />
-          <Route path="/image-upload" element={<ImageUpload />} />
-          <Route path="/forget-password" element={<ForgetPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          {!accessToken && (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/register" element={<Signup />} />
+              <Route path="/login" element={<Login />} />{" "}
+              <Route path="/otp" element={<Otp />} />
+              <Route path="/forget-password" element={<ForgetPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+            </>
+          )}
+          {accessToken && (
+            <>
+              <Route path="/image-upload" element={<ImageUpload />} />
+              <Route path="/change-password" element={<ChangePassword />} />
+            </>
+          )}
 
           <Route
             path="/admin"

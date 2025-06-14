@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [verified, setVerified] = useState(false);
   const [users, setUsers] = useState([]);
+ 
 
   useEffect(() => {
     const getaccessToken = async () => {
@@ -39,6 +40,8 @@ const AuthProvider = ({ children }) => {
 
     getaccessToken();
   }, []);
+
+  // Users
 
   const login = async (userData) => {
     try {
@@ -194,6 +197,9 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // Images
+
+ 
   const logout = async () => {
     if (!accessToken) return;
     try {

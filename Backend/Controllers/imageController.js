@@ -36,7 +36,7 @@ export const uploadImage = (req, res, next) => {
           user: req.user.id,
         });
 
-        res.status(201).json(newImage);
+        res.status(201).json({ success: true, newImage });
       }
     );
 
