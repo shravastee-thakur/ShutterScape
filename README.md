@@ -29,4 +29,5 @@ This project is a secure and modern full-stack Image Gallery application built w
 - **Email Service** -	Nodemailer
 - **Uploads** -	Multer + Streamifier (for Cloudinary integration)
 ## Author
-Shravastee Thakur
+### Shravastee Thakur
+MERN Stack Developer with a focus on Backend Development.
