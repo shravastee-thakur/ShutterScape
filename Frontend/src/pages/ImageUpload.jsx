@@ -99,13 +99,12 @@ const ImageUpload = () => {
       </div>
 
       {/* Image Grid */}
-      {/* Image Grid or Empty Message */}
       {imageList.length === 0 ? (
         <p className="text-center text-gray-500 mt-8">
           No images uploaded yet.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 overflow-y-scroll">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 overflow-y-scroll pb-20">
           {imageList.map((image) => (
             <div
               key={image._id || image.imageUrl}
@@ -118,7 +117,10 @@ const ImageUpload = () => {
               />
               <div className="p-2 text-sm text-center text-gray-700 flex justify-between">
                 {image.originalName}
-                <div onClick={() => handleSubmit(image._id)}>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => handleSubmit(image._id)}
+                >
                   <DeleteForeverOutlinedIcon />
                 </div>
               </div>

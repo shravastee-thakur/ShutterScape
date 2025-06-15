@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
-// import { rateLimit } from "express-rate-limit";
 import userRoute from "./Routes/userRoute.js";
 import adminRoute from "./Routes/adminRoute.js";
 import imageRoute from "./Routes/imageRoute.js";
@@ -21,14 +20,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet());
-
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   limit: 100,
-//   standardHeaders: "draft-8",
-//   legacyHeaders: false,
-// });
-// app.use(limiter);
 
 //Routes
 app.use("/api/v1/user", userRoute);

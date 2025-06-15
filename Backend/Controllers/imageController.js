@@ -24,16 +24,24 @@ export const uploadImage = (req, res, next) => {
       {
         folder: "ShutterScape",
         allowed_formats: ["jpg", "jpeg", "png", "webp"],
-        transformation: [{ width: 800, height: 800, crop: "limit" }],
+        // transformation: [{ width: 800, height: 800, crop: "limit" }],
+        eager: [
+          { width: 800, height: 800, crop: "limit" }, // thumbnail or resized version
+        ],
       },
       async (error, result) => {
         if (error) return res.status(500).json({ error });
 
         const newImage = await Image.create({
-          imageUrl: result.secure_url,
+          imageUrl: result.eager[0].secure_url, // resized version
+          originalUrl: result.secure_url, // full-size version
           originalName: req.file.originalname,
           publicId: result.public_id,
           user: req.user.id,
+          // imageUrl: result.secure_url,
+          // originalName: req.file.originalname,
+          // publicId: result.public_id,
+          // user: req.user.id,
         });
 
         res.status(201).json({ success: true, newImage });

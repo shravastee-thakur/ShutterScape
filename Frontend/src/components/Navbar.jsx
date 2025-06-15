@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -6,6 +6,11 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const Navbar = () => {
   const { data, verified, logout, role } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -24,19 +29,23 @@ const Navbar = () => {
       <div className="md:px-10 flex items-center gap-4">
         {verified && data ? (
           <div className="text-center">
-            <h3 className="font-bold">Welcome</h3>
-            <p>{data?.name}</p>
+            <h3 className="font-bold text-sm">Welcome</h3>
+            <p className="text-sm">{data?.name}</p>
           </div>
         ) : null}
 
         <div>
           {verified ? (
             <div className="relative py-2 group">
-              <button>
+              <button onClick={toggleDropdown}>
                 <AccountCircleIcon fontSize="large" />
               </button>
 
-              <div className="absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-white border border-gray-600 hidden group-hover:block">
+              <div
+                className={`absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-white border border-gray-600 ${
+                  isDropdownOpen ? "block" : "hidden"
+                }`}
+              >
                 <NavLink to={"/image-upload"}>
                   <p className="cursor-pointer text-black text-sm">Upload</p>
                 </NavLink>
@@ -50,7 +59,11 @@ const Navbar = () => {
                 {role === "admin" && (
                   <>
                     <hr className="my-2 border-t border-gray-500" />
-                    <p className="cursor-pointer text-red-700 text-sm">Admin</p>
+                    <NavLink to={"/admin"}>
+                      <p className="cursor-pointer text-red-700 text-sm">
+                        Admin
+                      </p>
+                    </NavLink>
                   </>
                 )}
               </div>

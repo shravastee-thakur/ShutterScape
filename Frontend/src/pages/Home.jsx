@@ -22,21 +22,22 @@ const Home = () => {
     getAllImages();
   }, []);
   return (
-    <div className="px-20">
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mt-8 overflow-y-scroll">
-      {images.map((image) => (
-        <div
-          key={image._id || image.imageUrl}
-          className="border rounded-md shadow-sm overflow-hidden"
-        >
-          <img
-            src={image.imageUrl}
-            alt={image.originalName}
-            className="w-full h-48 object-cover"
-          />
-        </div>
-      ))}
-    </div>
+    <div className="px-10 md:px-20 lg:px-32 my-14">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-8 overflow-y-scroll">
+        {images.map((image) => (
+          <div
+            key={image._id || image.imageUrl}
+            className="border rounded-md shadow-sm overflow-hidden"
+          >
+            <img
+              src={image.imageUrl}
+              alt={image.originalName}
+              // onClick={() => openModal(image.originalUrl)}
+              className="w-full h-48 object-cover"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -16,15 +16,16 @@ import {
   resetPasswordSchema,
   forgetPasswordSchema,
 } from "../validation/joiValidation.js";
-import  authenticate  from "../Middlewares/authMiddleware.js";
+import authenticate from "../Middlewares/authMiddleware.js";
+import { authLimiter } from "../Middlewares/ratelimitMiddleware.js";
 
 const router = express.Router();
 
 // register
-router.post("/register", registerSchema, register);
+router.post("/register", authLimiter, registerSchema, register);
 
 // login
-router.post("/login", loginSchema, loginStepOne);
+router.post("/login", authLimiter, loginSchema, loginStepOne);
 
 // verify otp
 router.post("/login/verify", otpVerificationSchema, verifyOtpLogin);
