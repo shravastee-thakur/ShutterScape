@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [verified, setVerified] = useState(false);
   const [users, setUsers] = useState([]);
- 
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const getaccessToken = async () => {
@@ -28,6 +28,7 @@ const AuthProvider = ({ children }) => {
           setRole(res.data.user.role);
           setVerified(res.data.user.verified);
           setUserId(res.data.user._id);
+          setUserData(res.data.user);
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -50,7 +51,7 @@ const AuthProvider = ({ children }) => {
         userData,
         { withCredentials: true }
       );
-      console.log(res.data);
+      
 
       if (res.data.success) {
         setUserId(res.data.userId);
@@ -77,6 +78,7 @@ const AuthProvider = ({ children }) => {
         setAccessToken(res.data.accessToken);
         setRole(res.data.user.role);
         setVerified(res.data.user.verified);
+        setUserData(res.data.user);
         alert(res.data.message);
         return true;
       }
@@ -199,7 +201,6 @@ const AuthProvider = ({ children }) => {
 
   // Images
 
- 
   const logout = async () => {
     if (!accessToken) return;
     try {
@@ -243,6 +244,7 @@ const AuthProvider = ({ children }) => {
           users,
           setUsers,
           deleteUser,
+          data: userData,
           logout,
         }}
       >

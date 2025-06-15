@@ -16,7 +16,7 @@ const Otp = () => {
     }
   };
   return (
-    <div className="flex items-center h-screen overflow-hidden justify-center bg-slate-300">
+    <div className="flex items-center  mt-40 overflow-y-scroll justify-center">
       <form
         onSubmit={handleOtpSubmit}
         className="bg-white p-6 rounded-xl shadow-md w-80"

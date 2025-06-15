@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 html, body, #root {
-  @apply h-full m-0 overflow-hidden;
+  @apply h-full m-0 overflow-auto;
   
 }
 
+::-webkit-scrollbar{
+    display: none;
+}

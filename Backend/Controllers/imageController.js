@@ -78,8 +78,18 @@ export const deleteImage = async (req, res, next) => {
     const image = await Image.findById(id);
     if (!image) return res.status(404).json({ message: "Image not found" });
 
-    if (image.user.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Unauthorized" });
+    // Convert both to string for consistent comparison
+    const imageUserId = image.user.toString();
+    const requestingUserId = req.user.id.toString();
+
+    if (imageUserId !== requestingUserId) {
+      return res.status(403).json({
+        message: "Unauthorized",
+        details: {
+          imageUserId,
+          requestingUserId,
+        },
+      });
     }
 
     const result = await cloudinary.uploader.destroy(image.publicId);

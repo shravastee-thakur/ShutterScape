@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 const ImageUpload = () => {
   const { accessToken } = useContext(AuthContext);
@@ -9,10 +10,10 @@ const ImageUpload = () => {
 
   // Fetch all uploaded images on mount
   useEffect(() => {
-    const getAllImages = async () => {
+    const getUserImages = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/image/get-image",
+          "http://localhost:8000/api/v1/image/user-image",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -20,15 +21,16 @@ const ImageUpload = () => {
             withCredentials: true,
           }
         );
+
         if (res.data.success) {
-          setImageList(res.data.allImages);
+          setImageList(res.data.userImages);
         }
       } catch (error) {
         console.error("Failed to fetch images", error);
       }
     };
 
-    getAllImages();
+    getUserImages();
   }, [accessToken]);
 
   // Handle image drop/upload
@@ -51,7 +53,6 @@ const ImageUpload = () => {
       );
 
       if (res.data.success) {
-        
         // Add the new image to the list
         setImageList((prev) => [...prev, res.data.newImage]);
       }
@@ -62,11 +63,25 @@ const ImageUpload = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
+  const handleSubmit = async (imageId) => {
+    const res = await axios.delete(
+      `http://localhost:8000/api/v1/image/delete-image/${imageId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true,
+      }
+    );
+    if (res.data.success) {
+      alert(res.data.message);
+      setImageList((prev) => prev.filter((img) => img._id !== imageId));
+    }
+  };
+
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-8 h-full overflow-auto">
-      <h1 className="text-3xl font-semibold text-center mb-6">
-        Image Gallery App
-      </h1>
+    <div className="w-full max-w-3xl mx-auto px-4 py-8 h-full">
+      <h1 className="text-3xl font-semibold text-center mb-6">Image Gallery</h1>
 
       {/* Dropzone */}
       <div
@@ -84,23 +99,33 @@ const ImageUpload = () => {
       </div>
 
       {/* Image Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-        {imageList.map((image) => (
-          <div
-            key={image._id || image.imageUrl}
-            className="border rounded-md shadow-sm overflow-hidden"
-          >
-            <img
-              src={image.imageUrl}
-              alt={image.originalName}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-2 text-sm text-center text-gray-700">
-              {image.originalName}
+      {/* Image Grid or Empty Message */}
+      {imageList.length === 0 ? (
+        <p className="text-center text-gray-500 mt-8">
+          No images uploaded yet.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 overflow-y-scroll">
+          {imageList.map((image) => (
+            <div
+              key={image._id || image.imageUrl}
+              className="border rounded-md shadow-sm overflow-hidden"
+            >
+              <img
+                src={image.imageUrl}
+                alt={image.originalName}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-2 text-sm text-center text-gray-700 flex justify-between">
+                {image.originalName}
+                <div onClick={() => handleSubmit(image._id)}>
+                  <DeleteForeverOutlinedIcon />
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

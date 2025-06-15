@@ -15,6 +15,6 @@ router.get("/get-image", getAllImages);
 
 router.post("/upload-image", authenticate, upload.single("image"), uploadImage);
 router.get("/user-image", authenticate, getUserImages);
-router.delete("delete-image/:id", authenticate, deleteImage);
+router.delete("/delete-image/:id", authenticate, deleteImage);
 
 export default router;

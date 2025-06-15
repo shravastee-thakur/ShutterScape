@@ -17,36 +17,38 @@ import ChangePassword from "./pages/ChangePassword";
 const App = () => {
   const { accessToken } = useContext(AuthContext);
   return (
-    <div className="h-screen">
+    <div className="h-screen overflow-y-scroll">
       <BrowserRouter>
         <Navbar />
         <Routes>
-          {!accessToken && (
-            <>
-              <Route path="/" element={<Home />} />
-              <Route path="/register" element={<Signup />} />
-              <Route path="/login" element={<Login />} />{" "}
-              <Route path="/otp" element={<Otp />} />
-              <Route path="/forget-password" element={<ForgetPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-            </>
-          )}
-          {accessToken && (
-            <>
-              <Route path="/image-upload" element={<ImageUpload />} />
-              <Route path="/change-password" element={<ChangePassword />} />
-            </>
-          )}
+          <>
+            <Route path="/" element={<Home />} />
+            {!accessToken && (
+              <>
+                <Route path="/register" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/otp" element={<Otp />} />
+                <Route path="/forget-password" element={<ForgetPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+              </>
+            )}
+            {accessToken && (
+              <>
+                <Route path="/image-upload" element={<ImageUpload />} />
+                <Route path="/change-password" element={<ChangePassword />} />
+              </>
+            )}
 
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Unauthorized />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <Admin />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Unauthorized />} />
+          </>
         </Routes>
       </BrowserRouter>
     </div>

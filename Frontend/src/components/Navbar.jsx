@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Navbar = () => {
-  const { data, verified, logout } = useContext(AuthContext);
+  const { data, verified, logout, role } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
@@ -16,26 +17,44 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-[#27667B] text-white  h-[80px] p-4 lg:p-6 flex justify-between items-center">
+    <div className="bg-[#27667B] text-white h-[80px] p-4 lg:p-6 flex justify-between items-center ">
       <h1 className="text-2xl lg:text-4xl font-semibold md:px-10">
-        ShutterScape
+        <NavLink to={"/"}>ShutterScape</NavLink>
       </h1>
       <div className="md:px-10 flex items-center gap-4">
-        {verified && data && (
+        {verified && data ? (
           <div className="text-center">
             <h3 className="font-bold">Welcome</h3>
             <p>{data?.name}</p>
           </div>
-        )}
+        ) : null}
 
         <div>
           {verified ? (
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 text-white md:font-bold font-semibold px-2 md:py-1 rounded-lg"
-            >
-              Logout
-            </button>
+            <div className="relative py-2 group">
+              <button>
+                <AccountCircleIcon fontSize="large" />
+              </button>
+
+              <div className="absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-white border border-gray-600 hidden group-hover:block">
+                <NavLink to={"/image-upload"}>
+                  <p className="cursor-pointer text-black text-sm">Upload</p>
+                </NavLink>
+                <hr className="my-2 border-t border-gray-500" />
+                <p
+                  onClick={handleLogout}
+                  className="cursor-pointer text-black text-sm"
+                >
+                  Logout
+                </p>
+                {role === "admin" && (
+                  <>
+                    <hr className="my-2 border-t border-gray-500" />
+                    <p className="cursor-pointer text-red-700 text-sm">Admin</p>
+                  </>
+                )}
+              </div>
+            </div>
           ) : (
             <button className="bg-[#45b8df] text-white md:font-bold font-semibold px-2 md:py-1 rounded-lg">
               <NavLink to={"/login"}>Login</NavLink>
