@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../Context/AuthProvider";
+import { AuthContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = () => {

@@ -6,7 +6,7 @@ export const getUsers = async (req, res, next) => {
     if (!users) {
       return res
         .status(401)
-        .json({ success: false, message: "Isers not found" });
+        .json({ success: false, message: "Users not found" });
     }
 
     if (users.length === 0) {

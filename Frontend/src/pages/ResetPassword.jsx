@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../Context/AuthProvider";
+import { AuthContext } from "../context/AuthProvider";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {

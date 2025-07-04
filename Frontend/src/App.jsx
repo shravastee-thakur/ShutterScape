@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
@@ -32,6 +32,7 @@ const App = () => {
                 <Route path="/reset-password" element={<ResetPassword />} />
               </>
             )}
+            
             {accessToken && (
               <>
                 <Route path="/image-upload" element={<ImageUpload />} />

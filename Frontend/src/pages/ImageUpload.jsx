@@ -94,7 +94,7 @@ const ImageUpload = () => {
         <p className="text-gray-600">
           {isDragActive
             ? "Drop the files here..."
-            : "Drag and drop or click to upload"}
+            : "Drag and drop or click to upload, File Size < 2Mb"}
         </p>
       </div>
 
