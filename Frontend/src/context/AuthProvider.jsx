@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
     const getaccessToken = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:8000/api/v1/user/refresh",
+          "https://shutterscape-bktd.onrender.com/api/v1/user/refresh",
           {},
           {
             withCredentials: true,
@@ -47,7 +47,7 @@ const AuthProvider = ({ children }) => {
   const login = async (userData) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/login",
+        "https://shutterscape-bktd.onrender.com/api/v1/user/login",
         userData,
         { withCredentials: true }
       );
@@ -66,7 +66,7 @@ const AuthProvider = ({ children }) => {
   const otpVerify = async (otp) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/login/verify",
+        "https://shutterscape-bktd.onrender.com/api/v1/user/login/verify",
         { userId, otp },
         {
           withCredentials: true,
@@ -90,7 +90,7 @@ const AuthProvider = ({ children }) => {
   const forgotPassword = async (email) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/forget-password",
+        "https://shutterscape-bktd.onrender.com/api/v1/user/forget-password",
         { email },
         {
           withCredentials: true, // optional
@@ -111,7 +111,7 @@ const AuthProvider = ({ children }) => {
   const resetPassword = async (userId, token, newPassword) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/reset-password",
+        "https://shutterscape-bktd.onrender.com/api/v1/user/reset-password",
         {
           userId,
           token,
@@ -133,7 +133,7 @@ const AuthProvider = ({ children }) => {
   const changePassword = async (oldPassword, newPassword) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/change-password",
+        "https://shutterscape-bktd.onrender.com/api/v1/user/change-password",
         { oldPassword, newPassword },
         {
           headers: {
@@ -155,7 +155,7 @@ const AuthProvider = ({ children }) => {
     const getUsers = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/admin/get-user",
+          "https://shutterscape-bktd.onrender.com/api/v1/admin/get-user",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -181,7 +181,7 @@ const AuthProvider = ({ children }) => {
   const deleteUser = async (userId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:8000/api/v1/admin/delete-user/${userId}`,
+        `https://shutterscape-bktd.onrender.com/api/v1/admin/delete-user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -205,7 +205,7 @@ const AuthProvider = ({ children }) => {
     if (!accessToken) return;
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/user/logout",
+        "https://shutterscape-bktd.onrender.com/api/v1/user/logout",
         {},
         {
           headers: {

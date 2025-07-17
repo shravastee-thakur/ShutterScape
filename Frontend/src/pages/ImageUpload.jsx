@@ -13,7 +13,7 @@ const ImageUpload = () => {
     const getUserImages = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/image/user-image",
+          "https://shutterscape-bktd.onrender.com/api/v1/image/user-image",
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -42,7 +42,7 @@ const ImageUpload = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/v1/image/upload-image",
+        "https://shutterscape-bktd.onrender.com/api/v1/image/upload-image",
         formData,
         {
           headers: {
@@ -65,7 +65,7 @@ const ImageUpload = () => {
 
   const handleSubmit = async (imageId) => {
     const res = await axios.delete(
-      `http://localhost:8000/api/v1/image/delete-image/${imageId}`,
+      `https://shutterscape-bktd.onrender.com/api/v1/image/delete-image/${imageId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
