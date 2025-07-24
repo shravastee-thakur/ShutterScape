@@ -7,8 +7,9 @@ import adminRoute from "./Routes/adminRoute.js";
 import imageRoute from "./Routes/imageRoute.js";
 
 const app = express();
+
 app.get("/", (req, res) => {
-  res.send("ShutterScape backend is running");
+  res.status(200).send("ShutterScape backend is running");
 });
 
 app.get("/api/ping", (req, res) => {
