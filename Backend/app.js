@@ -1,5 +1,4 @@
 import express from "express";
-import axios from "axios";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
@@ -8,22 +7,13 @@ import adminRoute from "./Routes/adminRoute.js";
 import imageRoute from "./Routes/imageRoute.js";
 
 const app = express();
+app.get("/", (req, res) => {
+  res.send("ShutterScape backend is running");
+});
 
-const url = `https://shutterscape-bktd.onrender.com`;
-const interval = 30000;
-
-function reloadWebsite() {
-  axios
-    .get(url)
-    .then((response) => {
-      console.log("website reloded");
-    })
-    .catch((error) => {
-      console.error(`Error : ${error.message}`);
-    });
-}
-
-setInterval(reloadWebsite, interval);
+app.get("/api/ping", (req, res) => {
+  res.json({ status: "alive" });
+});
 
 // Middlewares
 app.use(
